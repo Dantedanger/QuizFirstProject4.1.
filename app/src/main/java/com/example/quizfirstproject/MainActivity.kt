@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button;
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isInvisible
 import com.bignerdranch.android.quizfirstproject.Question
 
 private const val TAG = "MainActivity"
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: Button
     private lateinit var prevButton: Button
     private lateinit var questionTextView: TextView
+    var colCorrect: Int = 0
 
 
     private val questionBank = listOf(
@@ -90,6 +92,23 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         questionTextView.setText(questionTextResId)
+        trueButton.visibility = View.VISIBLE
+        falseButton.visibility = View.VISIBLE
+
+        if (currentIndex+1 == questionBank.size)
+            nextButton.visibility = View.GONE
+
+        if (currentIndex+2 == questionBank.size)
+            nextButton.visibility = View.VISIBLE
+
+
+        if (currentIndex == 0)
+            prevButton.visibility = View.GONE
+
+        if (currentIndex == 1)
+            prevButton.visibility = View.VISIBLE
+
+
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
@@ -99,9 +118,19 @@ class MainActivity : AppCompatActivity() {
         } else {
             R.string.incorrect_toast
         }
+        if (userAnswer == correctAnswer)
+            colCorrect++
         Toast.makeText(this, messageResId,
             Toast.LENGTH_SHORT)
             .show()
+        trueButton.visibility = View.GONE
+        falseButton.visibility = View.GONE
+        if (currentIndex+1 == questionBank.size) {
+            Toast.makeText(this, "Правильно : $colCorrect",
+                Toast.LENGTH_SHORT)
+                .show()
+        }
     }
+
 
 }
