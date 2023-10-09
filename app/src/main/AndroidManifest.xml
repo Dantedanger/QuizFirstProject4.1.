@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizFirstProject"
         tools:targetApi="31">
+
+        <activity
+            android:name="com.bignerdranch.android.quizfirstproject.CheatActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
