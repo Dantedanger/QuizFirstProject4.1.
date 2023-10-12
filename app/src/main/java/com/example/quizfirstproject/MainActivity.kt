@@ -6,20 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button;
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bignerdranch.android.quizfirstproject.CheatActivity
 import com.bignerdranch.android.quizfirstproject.EXTRA_ANSWER_SHOWN
-import com.bignerdranch.android.quizfirstproject.Question
 import com.bignerdranch.android.quizfirstproject.QuizViewModel
 
 
 private const val TAG = "MainActivity"
 private const val KEY_INDEX = "index"
 private const val REQUEST_CODE_CHEAT = 0
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
@@ -27,10 +26,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: Button
     private lateinit var questionTextView: TextView
     private lateinit var cheatButton: Button
-    var colCorrect: Int = 0
-    var colCheat: Int = 0
+    private var colCorrect: Int = 0
+    private var colCheat: Int = 0
     private val quizViewModel: QuizViewModel by
-    lazy { ViewModelProviders.of(this).get(QuizViewModel::class.java)
+    lazy {
+        ViewModelProviders.of(this)[QuizViewModel::class.java]
     }
 
 
@@ -50,11 +50,11 @@ class MainActivity : AppCompatActivity() {
         cheatButton = findViewById(R.id.cheat_button)
 
 
-        trueButton.setOnClickListener { view: View ->
+        trueButton.setOnClickListener {
             checkAnswer(true)
         }
 
-        falseButton.setOnClickListener { view: View ->
+        falseButton.setOnClickListener {
             checkAnswer(false)
         }
 
@@ -83,7 +83,8 @@ class MainActivity : AppCompatActivity() {
         updateQuestion()
     }
 
-    override fun onActivityResult(requestCode: Int,resultCode: Int, data: Intent?)
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != Activity.RESULT_OK) {
@@ -169,7 +170,7 @@ class MainActivity : AppCompatActivity() {
         trueButton.visibility = View.GONE
         falseButton.visibility = View.GONE
         cheatButton.visibility = View.GONE
-        if (quizViewModel.checkEnd(1)) {
+        if (quizViewModel.checkEndQuestions() && !quizViewModel.isCheater) {
             Toast.makeText(this, "Правильно : $colCorrect",
                 Toast.LENGTH_SHORT)
                 .show()

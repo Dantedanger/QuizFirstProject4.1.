@@ -3,19 +3,17 @@ package com.bignerdranch.android.quizfirstproject
 import androidx.lifecycle.ViewModel
 import com.example.quizfirstproject.R
 
-
-private const val TAG = "QuizViewModel"
 class QuizViewModel : ViewModel() {
     var currentIndex = 0
     var isCheater = false
 
     private val questionBank = listOf(
-        Question(R.string.question_australia, true, false),
-        Question(R.string.question_oceans, true, false),
-        Question(R.string.question_mideast, false, false),
-        Question(R.string.question_africa, false, false),
-        Question(R.string.question_americas, true, false),
-        Question(R.string.question_asia, true, false)
+        Question(textResId = R.string.question_australia, answer = true, answered = false),
+        Question(textResId = R.string.question_oceans, answer = true, answered = false),
+        Question(textResId = R.string.question_mideast, answer = false, answered = false),
+        Question(textResId = R.string.question_africa, answer = false, answered = false),
+        Question(textResId = R.string.question_americas, answer = true, answered = false),
+        Question(textResId = R.string.question_asia, answer = true, answered = false)
     )
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
@@ -31,12 +29,19 @@ class QuizViewModel : ViewModel() {
         currentIndex = (currentIndex - 1) % questionBank.size
     }
 
-    fun checkEnd(Col:Int): Boolean {
-        return (currentIndex + Col) == questionBank.size
+    fun checkEnd(col:Int): Boolean {
+        return (currentIndex + col) == questionBank.size
     }
 
     fun questionAnswered(){
         questionBank[currentIndex].answered = true
+    }
+
+    fun checkEndQuestions(): Boolean {
+        for (i in 0..<questionBank.size - 1)
+            if (!questionBank[i].answered)
+                return false
+        return true
     }
 
 }
