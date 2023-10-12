@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var questionTextView: TextView
     private lateinit var cheatButton: Button
     var colCorrect: Int = 0
+    var colCheat: Int = 0
     private val quizViewModel: QuizViewModel by
     lazy { ViewModelProviders.of(this).get(QuizViewModel::class.java)
     }
@@ -91,6 +92,8 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_CHEAT)
         {
             quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+            colCheat += 1
+            checkCheat()
         }
     }
     override fun onStart() {
@@ -126,6 +129,14 @@ class MainActivity : AppCompatActivity() {
         questionTextView.setText(questionTextResId)
         trueButton.visibility = View.VISIBLE
         falseButton.visibility = View.VISIBLE
+        cheatButton.visibility = View.VISIBLE
+        checkCheat()
+
+        if (quizViewModel.currentQuestionAnswered) {
+            trueButton.visibility = View.GONE
+            falseButton.visibility = View.GONE
+            cheatButton.visibility = View.GONE
+        }
 
         if (quizViewModel.checkEnd(1))
             nextButton.visibility = View.GONE
@@ -154,13 +165,19 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, messageResId,
             Toast.LENGTH_SHORT)
             .show()
+        quizViewModel.questionAnswered()
         trueButton.visibility = View.GONE
         falseButton.visibility = View.GONE
+        cheatButton.visibility = View.GONE
         if (quizViewModel.checkEnd(1)) {
             Toast.makeText(this, "Правильно : $colCorrect",
                 Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+    private fun checkCheat(){
+        if (colCheat ==3)
+            cheatButton.visibility = View.GONE
     }
 
 }

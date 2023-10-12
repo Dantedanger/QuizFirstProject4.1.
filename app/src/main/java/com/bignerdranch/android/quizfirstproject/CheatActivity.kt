@@ -22,6 +22,7 @@ class CheatActivity : AppCompatActivity() {
     private lateinit var showAnswerButton: Button
     private lateinit var versionAndroid: TextView
     private var answerIsTrue = false
+    private var colCheat: Int=0;
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
